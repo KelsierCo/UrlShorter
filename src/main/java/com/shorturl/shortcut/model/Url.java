@@ -17,8 +17,7 @@ public class Url {
     public Url() {
     }
 
-    public Url(Long id, String url, String shortUrl) {
-        this.id = id;
+    public Url(String url, String shortUrl) {
         this.url = url;
         this.shortUrl = shortUrl;
     }
