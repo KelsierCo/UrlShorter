@@ -1,19 +1,27 @@
 package com.shorturl.shortcut.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.shorturl.shortcut.service.UrlServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/url")
+import java.util.Map;
+
+@RestController
+@RequestMapping("/url")
 public class UrlController {
 
-    @GetMapping
-    public String getUrl(){
-        return "Hello world";
+    @Autowired
+    UrlServices urlServices;
+
+    @GetMapping("/{shortUrl}")
+    public ResponseEntity<Void> getUrl(@PathVariable String shortUrl){
+        return urlServices.getUrl(shortUrl);
     }
 
     @PostMapping
-    public String postUrl(){
+    public String postUrl(@RequestBody Map<String, String> json){
+        urlServices.postUrl(json.get("url"));
         return "Hello World";
     }
 }
