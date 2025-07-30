@@ -16,7 +16,9 @@ public class UrlServices {
     private UrlRepository urlRepository;
 
     public ResponseEntity<Void> getUrl(String urlShort){
-        String url = urlRepository.findAll().get(0).getUrl();
+        String url = urlRepository.findByShortUrl(urlShort)
+                .map(Url::getUrl)
+                .orElseThrow(() -> new RuntimeException("URL no encontrada"));
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(url))
                 .build();
