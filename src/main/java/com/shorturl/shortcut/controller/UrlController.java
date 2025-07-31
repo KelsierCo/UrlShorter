@@ -21,7 +21,7 @@ public class UrlController {
 
     @PostMapping
     public String postUrl(@RequestBody Map<String, String> json){
-        urlServices.postUrl(json.get("url"));
-        return "Hello World";
+        String response = urlServices.postUrl(json.get("url"));
+        return response;
     }
 }

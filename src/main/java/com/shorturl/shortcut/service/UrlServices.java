@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 public class UrlServices {
@@ -24,13 +26,27 @@ public class UrlServices {
                 .build();
     }
 
-    public void postUrl(String urlOriginal){
+    public String postUrl(String urlOriginal){
         String shorUrl = generateShortUrl(urlOriginal);
         Url url = new Url(urlOriginal, shorUrl);
         urlRepository.save(url);
+        return shorUrl;
     }
 
     private String generateShortUrl(String originalUrl){
-        return "1";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(originalUrl.getBytes());
+            byte[] digest = md.digest();
+
+            StringBuilder sb = new StringBuilder();
+            for(byte b : digest){
+                sb.append(String.format("%02x", b));
+            }
+
+            return sb.substring(0, 8);
+        } catch (NoSuchAlgorithmException e){
+            throw new RuntimeException("Error generando el hash");
+        }
     }
 }
