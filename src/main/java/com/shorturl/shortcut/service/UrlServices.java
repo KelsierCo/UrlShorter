@@ -1,5 +1,6 @@
 package com.shorturl.shortcut.service;
 
+import com.shorturl.shortcut.exception.RouteNotFoundException;
 import com.shorturl.shortcut.model.Url;
 import com.shorturl.shortcut.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UrlServices {
     public ResponseEntity<Void> getUrl(String urlShort){
         String url = urlRepository.findByShortUrl(urlShort)
                 .map(Url::getUrl)
-                .orElseThrow(() -> new RuntimeException("URL no encontrada"));
+                .orElseThrow(() -> new RouteNotFoundException("URL no encontrada"));
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(url))
                 .build();
